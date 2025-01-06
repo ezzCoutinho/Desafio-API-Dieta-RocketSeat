@@ -7,4 +7,4 @@ class Diets(db.Model):
   name = db.Column(db.String(80), nullable=False)
   description = db.Column(db.String(240), nullable=False)
   date = db.Column(db.DateTime, default=func.now())
-  is_not_diet = db.Column(db.Boolean, default=False)
+  is_not_diet = db.Column(db.String(80), default="Sim.")
