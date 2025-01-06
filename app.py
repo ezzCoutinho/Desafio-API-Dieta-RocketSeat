@@ -24,5 +24,21 @@ def create_meals():
   
   return jsonify({"message": "Falha! em registrar a dieta."}), 404
 
+@app.route("/meals/<int:id_meals>", methods = ["PUT"])
+def update_meals(id_meals):
+  data = request.json
+  meal = Diets.query.get(id_meals)
+
+  if meal:
+    meal.name = data.get("name")
+    meal.description = data.get("description")
+    meal.date = data.get("date")
+    meal.is_not_diet = data.get("is_not_diet")
+    db.session.commit()
+
+    return jsonify({"message": "Ok! dieta foi atualizada com sucesso!"})
+  
+  return jsonify({"message": "Dieta não foi atualizada!"}), 404 
+
 if __name__ == "__main__":
   app.run(debug=True)
