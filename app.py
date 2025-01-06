@@ -17,7 +17,7 @@ def create_meals():
   date = data.get("date")
   is_not_diet = data.get("is_not_diet")
   if name and description:
-    diet = Diets(id=id, name=name, description=description, date=date, is_not_diet=is_not_diet)
+    diet = Diets(name=name, description=description, date=date, is_not_diet=is_not_diet)
     db.session.add(diet)
     db.session.commit()
     return jsonify({"message": "Ok! dieta registrada com sucesso..."})
@@ -38,7 +38,19 @@ def update_meals(id_meals):
 
     return jsonify({"message": "Ok! dieta foi atualizada com sucesso!"})
   
-  return jsonify({"message": "Dieta não foi atualizada!"}), 404 
+  return jsonify({"message": "Dieta não foi atualizada!"}), 404
+
+@app.route("/melas/<int:id_meals>", methods = ["DELETE"])
+def delete_meals(id_meals):
+  meal = Diets.query.get(id_meals)
+
+  if meal:
+    db.session.delete(meal)
+    db.session.commit()
+    return jsonify({"message": f"Ok! a dieta {id_meals}, foi apagada!"})
+  
+  return jsonify({"message": "Não foi possível apagar a dieta!"}), 404
+
 
 if __name__ == "__main__":
   app.run(debug=True)
