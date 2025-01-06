@@ -40,7 +40,7 @@ def update_meals(id_meals):
   
   return jsonify({"message": "Dieta não foi atualizada!"}), 404
 
-@app.route("/melas/<int:id_meals>", methods = ["DELETE"])
+@app.route("/meals/<int:id_meals>", methods = ["DELETE"])
 def delete_meals(id_meals):
   meal = Diets.query.get(id_meals)
 
@@ -50,6 +50,19 @@ def delete_meals(id_meals):
     return jsonify({"message": f"Ok! a dieta {id_meals}, foi apagada!"})
   
   return jsonify({"message": "Não foi possível apagar a dieta!"}), 404
+
+@app.route("/meals", methods = ["GET"])
+def read_meals():
+  meals = Diets.query.all()
+  meal_list = [meal.to_dict() for meal in meals]
+    
+  output = {
+
+    "diet": meal_list,
+    "total_diets": len(meal_list)
+  }
+
+  return jsonify(output)
 
 
 if __name__ == "__main__":
