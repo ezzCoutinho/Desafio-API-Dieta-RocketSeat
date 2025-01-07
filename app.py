@@ -11,7 +11,6 @@ db.init_app(app)
 @app.route("/meals", methods = ["POST"])
 def create_meals():
   data = request.json
-  id = data.get("id")
   name = data.get("name")
   description = data.get("description")
   date = data.get("date")
@@ -63,6 +62,15 @@ def read_meals():
   }
 
   return jsonify(output)
+
+@app.route("/meals/<int:id_meals>", methods = ["GET"])
+def read_meal(id_meals):
+  meal = Diets.query.get(id_meals)
+
+  if meal:
+    return jsonify({"name": meal.name, "description": meal.description, "date": meal.date, "is not diet": meal.is_not_diet})
+
+  return jsonify({"message": "Não foi possível achar a dieta!"}), 404 
 
 
 if __name__ == "__main__":
